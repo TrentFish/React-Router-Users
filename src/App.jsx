@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, useLocation, Routes, Route } from 'react-router-dom'
+import { Link, useLocation, Routes, Route, useParams } from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -16,8 +16,10 @@ const Users = ({ users }) => {
         {
           users.map( user => {
             return (
-              <li>
+              <li key={user.id}>
+                <Link to={`/users/${user.id}`}>
                 {user.name}
+                </Link>
               </li>
             )
           })
@@ -42,6 +44,29 @@ const Posts = ({ posts }) => {
           })
         }
       </ul>
+    </div>
+  )
+}
+
+const User = ({ users }) => {
+  const params = useParams()
+  const id = params.id*1
+
+  const user = users.find(user => user.id === id)
+
+  if(!user){
+    return null;
+  }
+
+  return (
+    <div>
+      <h1>User Details for { user.name }</h1>
+      <div>
+        <h3>Username: {user.username}</h3>
+        <h3>Email: {user.email}</h3>
+        <h3>Phone Number: {user.phone}</h3>
+        <Link to="/users">Back to User List</Link>
+      </div>
     </div>
   )
 }
@@ -80,6 +105,7 @@ function App() {
       <Routes>
         <Route path="/" element={ <Home /> } />
         <Route path="/users" element={ <Users users={ users }/> } />
+        <Route path="/users/:id" element={ <User users={ users }/> } />
         <Route path="/posts" element={ <Posts posts={ posts }/> } />
       </Routes>
     </>
