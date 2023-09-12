@@ -12,4 +12,9 @@ nav{
 nav a{
   color: aqua;
   font-size: large;
+  padding: 0.3rem;
+}
+
+nav a.selected{
+  border: 2px solid yellow;
 }
